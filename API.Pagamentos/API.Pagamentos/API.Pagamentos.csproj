@@ -14,9 +14,8 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Domain\" />
-    <Folder Include="DTOs\" />
     <Folder Include="DbContext\" />
+    <Folder Include="DTOs\" />
     <Folder Include="IoC\" />
     <Folder Include="Mappings\" />
     <Folder Include="Validation\" />
