@@ -1,6 +1,6 @@
 ﻿namespace API.Pagamentos.Domain
 {
-    public class Lojista : Usuario
+    public class Shopkeeper : User
     {
         public string CNPJ { get; set; } = string.Empty;
     }

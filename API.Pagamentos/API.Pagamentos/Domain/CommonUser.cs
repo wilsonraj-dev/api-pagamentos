@@ -1,6 +1,6 @@
 ﻿namespace API.Pagamentos.Domain
 {
-    public class UsuarioComum : Usuario
+    public class CommonUser : User
     {
         public string CPF { get; set; } = string.Empty;
     }

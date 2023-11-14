@@ -13,12 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Context\" />
     <Folder Include="Controllers\" />
-    <Folder Include="DbContext\" />
     <Folder Include="DTOs\" />
     <Folder Include="IoC\" />
     <Folder Include="Mappings\" />
-    <Folder Include="Validation\" />
     <Folder Include="Repositories\Interfaces\" />
   </ItemGroup>
 
