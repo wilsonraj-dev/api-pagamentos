@@ -1,6 +1,7 @@
 ﻿using API.Pagamentos.Domain;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace API.Pagamentos.DTOs
 {
@@ -34,7 +35,10 @@ namespace API.Pagamentos.DTOs
         [Required(ErrorMessage = "User type is required")]
         public UserType UserType { get; set; }
 
+        [JsonIgnore]
         public ICollection<Transaction> TransactionSender { get; set; }
+        
+        [JsonIgnore]
         public ICollection<Transaction> TransactionReceiver { get; set; }
     }
 }
