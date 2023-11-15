@@ -11,6 +11,7 @@ namespace API.Pagamentos.Domain
         private void ValidateDomain(string CPF)
         {
             DomainExceptionValidation.When(string.IsNullOrEmpty(CPF), "Invalid CPF. CPF is required for common users.");
+            DomainExceptionValidation.When(CPF.Length < 11, "Invalid CPF. CPF must have 11 characters.");
 
             this.CPF = CPF;
         }
