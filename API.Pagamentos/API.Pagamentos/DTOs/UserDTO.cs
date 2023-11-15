@@ -27,6 +27,10 @@ namespace API.Pagamentos.DTOs
         [PasswordPropertyText(true)]
         public string Password { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "CPF/CNPJ is required")]
+        [MaxLength(14)]
+        public string CPF_CNPJ { get; set; } = string.Empty;
+
         [DisplayFormat(DataFormatString = "{0:C2}")]
         [DataType(DataType.Currency)]
         [DisplayName("Balance")]
@@ -37,7 +41,7 @@ namespace API.Pagamentos.DTOs
 
         [JsonIgnore]
         public ICollection<Transaction> TransactionSender { get; set; }
-        
+
         [JsonIgnore]
         public ICollection<Transaction> TransactionReceiver { get; set; }
     }

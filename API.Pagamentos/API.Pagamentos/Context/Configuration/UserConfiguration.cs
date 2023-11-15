@@ -13,6 +13,7 @@ namespace API.Pagamentos.Context.Configuration
             builder.Property(x => x.LastName).HasMaxLength(100).IsRequired();
             builder.Property(x => x.Email).HasMaxLength(80).IsRequired();
             builder.Property(x => x.Password).HasMaxLength(80).IsRequired();
+            builder.Property(x => x.CPF_CNPJ).HasMaxLength(20).IsRequired();
             builder.Property(x => x.Balance).HasPrecision(10, 3);
 
             builder.HasMany(u => u.TransactionSender)
