@@ -40,9 +40,9 @@ namespace API.Pagamentos.DTOs
         public UserType UserType { get; set; }
 
         [JsonIgnore]
-        public ICollection<Transaction> TransactionSender { get; set; }
+        public ICollection<Transaction>? TransactionSender { get; set; }
 
         [JsonIgnore]
-        public ICollection<Transaction> TransactionReceiver { get; set; }
+        public ICollection<Transaction>? TransactionReceiver { get; set; }
     }
 }

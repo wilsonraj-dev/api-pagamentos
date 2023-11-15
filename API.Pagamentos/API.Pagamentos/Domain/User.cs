@@ -12,8 +12,8 @@ namespace API.Pagamentos.Domain
         public string CPF_CNPJ { get; set; } = string.Empty;
         public decimal Balance { get; set; }
         public UserType UserType { get; set; }
-        public ICollection<Transaction> TransactionSender { get; set; }
-        public ICollection<Transaction> TransactionReceiver { get; set; }
+        public ICollection<Transaction>? TransactionSender { get; set; }
+        public ICollection<Transaction>? TransactionReceiver { get; set; }
 
         public User() { }
 
@@ -41,7 +41,7 @@ namespace API.Pagamentos.Domain
             DomainExceptionValidation.When(string.IsNullOrEmpty(CPF_CNPJ), "Invalid CPF/CNPJ. Field is required.");
             DomainExceptionValidation.When(CPF_CNPJ.Length > 14, "Invalid CPF/CNPJ, too long, maximun 14 characters.");
             DomainExceptionValidation.When(balance < 0, "The balance cannot be less than 0.");
-            DomainExceptionValidation.When(Convert.ToInt32(userType) != 0 || Convert.ToInt32(userType) != 1, "Invalid user type, sets a valid user type (0 or 1).");
+            DomainExceptionValidation.When(Convert.ToInt32(userType) != 0 && Convert.ToInt32(userType) != 1, "Invalid user type, sets a valid user type (0 or 1).");
 
             Name = name;
             LastName = lastName;

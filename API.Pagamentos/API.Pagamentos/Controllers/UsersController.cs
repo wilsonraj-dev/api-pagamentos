@@ -63,6 +63,11 @@ namespace API.Pagamentos.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> CreateUserAsync([FromBody] UserDTO userDTO)
         {
+            if (await _userRepository.GetEmailUserAsync(userDTO.Email))
+                return BadRequest("Error: E-mail already exists.");
+            else if (await _userRepository.GetCPF_CNPJUserAsync(userDTO.CPF_CNPJ))
+                return BadRequest("Error: CPF/CNPJ already exists");
+
             var user = _mapper.Map<User>(userDTO);
             await _userRepository.CreateAsync(user);
 

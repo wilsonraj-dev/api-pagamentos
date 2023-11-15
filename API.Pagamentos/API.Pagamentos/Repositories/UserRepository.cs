@@ -24,6 +24,16 @@ namespace API.Pagamentos.Repositories
             return await _context.Users.FindAsync(id) ?? throw new ArgumentNullException();
         }
 
+        public async Task<bool> GetCPF_CNPJUserAsync(string CPF_CNPJ)
+        {
+            return await _context.Users.AnyAsync(x => x.CPF_CNPJ == CPF_CNPJ);
+        }
+
+        public async Task<bool> GetEmailUserAsync(string email)
+        {
+            return await _context.Users.AnyAsync(x => x.Email == email);
+        }
+
         public async Task<User> CreateAsync(User user)
         {
             _context.Add(user);
