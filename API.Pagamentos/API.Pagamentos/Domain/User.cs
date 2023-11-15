@@ -11,7 +11,8 @@ namespace API.Pagamentos.Domain
         public string Password { get; set; } = string.Empty;
         public decimal Balance { get; set; }
         public UserType UserType { get; set; }
-        public List<Transaction> Transactions { get; set; }
+        public ICollection<Transaction> TransactionSender { get; set; }
+        public ICollection<Transaction> TransactionReceiver { get; set; }
 
         public User() { }
 

@@ -14,6 +14,16 @@ namespace API.Pagamentos.Context.Configuration
             builder.Property(x => x.Email).HasMaxLength(80).IsRequired();
             builder.Property(x => x.Password).HasMaxLength(80).IsRequired();
             builder.Property(x => x.Balance).HasPrecision(10, 3);
+
+            builder.HasMany(u => u.TransactionSender)
+                   .WithOne(t => t.Sender)
+                   .HasForeignKey(t => t.SenderId)
+                   .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(u => u.TransactionReceiver)
+                   .WithOne(t => t.Receiver)
+                   .HasForeignKey(t => t.ReceiverId)
+                   .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
