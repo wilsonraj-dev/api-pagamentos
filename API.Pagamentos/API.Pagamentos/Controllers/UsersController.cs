@@ -41,7 +41,7 @@ namespace API.Pagamentos.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UserDTO>> GetUserByIdAsync(int? id)
+        public async Task<ActionResult<UserDTO>> GetUserByIdAsync(long? id)
         {
             var user = await _userRepository.GetByIdAsync(id);
 
@@ -60,6 +60,7 @@ namespace API.Pagamentos.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> CreateUserAsync([FromBody] UserDTO userDTO)
         {
