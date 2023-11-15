@@ -1,4 +1,5 @@
 ﻿using API.Pagamentos.Context;
+using API.Pagamentos.Mappings;
 using API.Pagamentos.Repositories;
 using API.Pagamentos.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,8 @@ namespace API.Pagamentos.IoC
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
+
+            services.AddAutoMapper(typeof(DomainToDTOMappingProfile));
 
             return services;
         }
