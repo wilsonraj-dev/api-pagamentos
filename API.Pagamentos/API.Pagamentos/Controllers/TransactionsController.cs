@@ -4,7 +4,9 @@ using API.Pagamentos.Repositories.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Globalization;
 using System.Net;
+using System.Xml.Linq;
 
 namespace API.Pagamentos.Controllers
 {
@@ -68,31 +70,49 @@ namespace API.Pagamentos.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<TransactionDTO>> CreateTransactionAsync([FromBody] TransactionDTO transactionDTO)
         {
-            var user = _userRepository.GetByIdAsync(transactionDTO.ReceiverId).Result;
-            if (user == null)
-                return NotFound("Receiver not found");
+            var userReceiver = _userRepository.GetByIdAsync(transactionDTO.ReceiverId).Result;
+            var userSender = _userRepository.GetByIdAsync(transactionDTO.SenderId).Result;
 
-            ValidTransction(user, Convert.ToDecimal(transactionDTO.ValueTransaction));
-            if (await AuthorizeTransaction() == false)
+            if (userReceiver == null)
+                return NotFound("Receiver not found");
+            else if (userSender == null)
+                return NotFound("Sender not found");
+
+            ValidTransction(userReceiver, userSender, Convert.ToDecimal(transactionDTO.ValueTransaction));
+            if (await ConsultExternalService("https://run.mocky.io/v3/5794d450-d2e2-4412-8131-73d0293ac1cc") == false)
                 return BadRequest("Not autorized");
 
+            userSender.Balance -= Convert.ToDecimal(transactionDTO.ValueTransaction);
+            userReceiver.Balance += Convert.ToDecimal(transactionDTO.ValueTransaction);
 
-            return null;
+            await _userRepository.UpdateAsync(userReceiver);
+            await _userRepository.UpdateAsync(userSender);
+
+            var transaction = _mapper.Map<Transaction>(transactionDTO);
+            await _transactionRepository.CreateAsync(transaction);
+
+            if (await ConsultExternalService("https://run.mocky.io/v3/54dc2cf1-3add-45b5-b5a9-6bf7e7f1f4a6"))
+                Console.WriteLine($"You received a transfer from {userReceiver.Name} worth {transaction.ValueTransaction.ToString("F2", CultureInfo.InvariantCulture)}");
+
+            return Ok(_mapper.Map<TransactionDTO>(transaction));
         }
 
-        private void ValidTransction(User user, decimal valueTransaction)
+        private void ValidTransction(User userReceiver, User userSender, decimal valueTransaction)
         {
-            if (user.UserType == UserType.Shopkeeper)
-                throw new Exception($"User {user.Name} its a Shopkeeper. He cannot make transfers");
-            else if (user.Balance < valueTransaction)
-                throw new Exception($"User {user.Name} has insufficient balance to make this transfer");
+            if (userSender.UserType == UserType.Shopkeeper)
+                throw new Exception($"User {userSender.Name} its a Shopkeeper. He cannot make transfers");
+            else if (userSender.Balance < valueTransaction)
+                throw new Exception($"User {userSender.Name} has insufficient balance to make this transfer");
+            else if (userSender.Id == userReceiver.Id)
+                throw new Exception($"Receiver and Sender are the same Users");
         }
 
-        private async Task<bool> AuthorizeTransaction()
+        private async Task<bool> ConsultExternalService(string url)
         {
+
             using (HttpClient client = new HttpClient())
             {
-                HttpResponseMessage response = await client.GetAsync("https://run.mocky.io/v3/5794d450-d2e2-4412-8131-73d0293ac1cc");
+                HttpResponseMessage response = await client.GetAsync(url);
                 return response.StatusCode == HttpStatusCode.OK;
             }
         }

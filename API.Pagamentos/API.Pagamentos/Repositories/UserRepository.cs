@@ -40,5 +40,11 @@ namespace API.Pagamentos.Repositories
             await _context.SaveChangesAsync();
             return user;
         }
+
+        public async Task UpdateAsync(User user)
+        {
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+        }
     }
 }

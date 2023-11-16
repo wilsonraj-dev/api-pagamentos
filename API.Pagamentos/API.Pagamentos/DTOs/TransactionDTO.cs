@@ -16,12 +16,12 @@ namespace API.Pagamentos.DTOs
         public double ValueTransaction { get; set; }
 
         [JsonIgnore]
-        public User Sender { get; set; }
+        public User? Sender { get; set; }
 
         public long SenderId { get; set; }
 
         [JsonIgnore]
-        public User Receiver { get; set; }
+        public User? Receiver { get; set; }
 
         public long ReceiverId { get; set; }
 
