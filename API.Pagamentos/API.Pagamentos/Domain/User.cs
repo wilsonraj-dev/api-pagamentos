@@ -38,10 +38,14 @@ namespace API.Pagamentos.Domain
             DomainExceptionValidation.When(string.IsNullOrEmpty(email), "Invalid email. Email is required.");
             DomainExceptionValidation.When(string.IsNullOrEmpty(password), "Invalid password. Password is required.");
             DomainExceptionValidation.When(password.Length < 5, "Invalid password, too short, minimum 5 characters.");
-            DomainExceptionValidation.When(string.IsNullOrEmpty(CPF_CNPJ), "Invalid CPF/CNPJ. Field is required.");
-            DomainExceptionValidation.When(CPF_CNPJ.Length > 14, "Invalid CPF/CNPJ, too long, maximun 14 characters.");
-            DomainExceptionValidation.When(balance < 0, "The balance cannot be less than 0.");
             DomainExceptionValidation.When(Convert.ToInt32(userType) != 0 && Convert.ToInt32(userType) != 1, "Invalid user type, sets a valid user type (0 or 1).");
+            DomainExceptionValidation.When(balance < 0, "The balance cannot be less than 0.");
+            DomainExceptionValidation.When(string.IsNullOrEmpty(CPF_CNPJ), "Invalid CPF/CNPJ. Field is required.");
+
+            if (Convert.ToInt32(userType) == 0)
+                DomainExceptionValidation.ValidateCPF(CPF_CNPJ, "Invalid CPF format.");
+            else
+                DomainExceptionValidation.ValidateCNPJ(CPF_CNPJ, "Invalid CNPJ format.");
 
             Name = name;
             LastName = lastName;
