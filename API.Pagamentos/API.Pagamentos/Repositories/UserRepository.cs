@@ -21,7 +21,7 @@ namespace API.Pagamentos.Repositories
 
         public async Task<User> GetByIdAsync(long? id)
         {
-            return await _context.Users.FindAsync(id) ?? throw new ArgumentNullException();
+            return await _context.Users.FindAsync(id);
         }
 
         public async Task<bool> GetCPF_CNPJUserAsync(string CPF_CNPJ)
