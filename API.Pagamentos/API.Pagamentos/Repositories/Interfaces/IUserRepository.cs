@@ -9,6 +9,6 @@ namespace API.Pagamentos.Repositories.Interfaces
         Task<bool> GetCPF_CNPJUserAsync(string CPF_CNPJ);
         Task<bool> GetEmailUserAsync(string email);
         Task<User> CreateAsync(User user);
-        Task UpdateAsync(User user);
+        Task<User> UpdateAsync(User user);
     }
 }
